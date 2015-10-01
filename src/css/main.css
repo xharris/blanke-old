@@ -87,61 +87,62 @@
 }
 
 #splitterContainer {/* Main splitter element */
-height:100%;width:100%;
-padding-bottom:36px; /* was 31 but magically changed */
-padding-top:1px;
-background-color:#1b1c1d;
+    height:80%;
+    width:100%;
+    padding-bottom:36px; /* was 31 but magically changed */
+    padding-top:1px;
+    background-color:#1b1c1d;
+    box-sizing:border-box;
 }
 #leftPane{
-float:left;
-width:20%;height:100%;
-overflow: none;
-background: linear-gradient(left,gray,#707070); /* backgroundColor */
-position: relative;
+    float:left;
+    width:20%;height:100%;
+    overflow: none;
+    background: linear-gradient(left,gray,#707070); /* backgroundColor */
+    position: relative;
 }
 #rightPane{	/*Contains toolbar and horizontal splitter*/
-float:right;
-width:80%;height:100%;
-overflow: auto;
-background-color: #C8C8C8; /* backgroundColor */
+    float:right;
+    width:80%;height:100%;
+    overflow: auto;
+    background-color: #C8C8C8; /* backgroundColor */
 }
 
 
 #splitterContainer2 {/* Main splitter element */
-height:100%;width:100%;
-padding-bottom:36px; /* was 31 but magically changed */
-padding-top:1px;
-background-color:#1b1c1d;
+    height:100%;width:100%;
+    padding-bottom:36px; /* was 31 but magically changed */
+    padding-top:1px;
+    background-color:#1b1c1d;
 }
 #topPane{
-float:left;
-width:100%;height:50%;
-overflow: auto;
-background: #1B1C1D; /* backgroundColor */
+    float:left;
+    width:100%;height:50%;
+    overflow: auto;
+    background: #1B1C1D; /* backgroundColor */
 }
 
 #bottomPane{ /*Contains toolbar and horizontal splitter*/
-float:right;
-width:100%;height:50%;
-overflow: auto;
-background-color: #2C2C2C; /* backgroundColor */
-color: white;
-padding: 5px;
-border: 3px #1B1C1D solid;
-font-size: 12px;
-box-sizing:border-box; 
+    float:right;
+    width:100%;height:50%;
+    overflow: auto;
+    background-color: #2C2C2C; /* backgroundColor */
+    color: white;
+    padding: 5px;
+    border: 3px #1B1C1D solid;
+    font-size: 12px;
 }
 
 
 .splitbarV {
-float:left;width:4px;height:100%;
-line-height:0px;font-size:0px;
-background: linear-gradient(left,gray,#707070); /* #C1C1C1 foregroundColor */
+    float:left;width:4px;height:100%;
+    line-height:0px;font-size:0px;
+    background: linear-gradient(left,gray,#707070); /* #C1C1C1 foregroundColor */
 }
 .splitbuttonV{
-margin-top:-41px;margin-left:0px;top:50%;position:relative;
-height:0px;width:6px;
-background:black 10px 50%;
+    margin-top:-41px;margin-left:0px;top:50%;position:relative;
+    height:0px;width:6px;
+    background:black 10px 50%;
 }
 .jstree-anchor{
     color:white !important;

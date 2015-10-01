@@ -1,0 +1,1 @@
+make it so splitterContainer padding-bottom is height of title bar

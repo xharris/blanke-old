@@ -1,0 +1,12 @@
+{
+  "name": "BlankE 2.0",
+  "main": "index.html",
+  "window":{
+  	"title":"BlankE 2.0",
+  	"toolbar": false,
+  	"icon": "blanke.ico",
+  	"min_width": 640,
+  	"min_height": 480,
+  	"frame": false
+  }
+}

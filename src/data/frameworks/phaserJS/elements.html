@@ -1,0 +1,63 @@
+<style>
+#btn_close{
+  position: fixed;
+  right:20px;
+  top:20px;
+  background-color:white;
+  text-align:center;
+  width:25px;
+  height:25px;
+  color:black;
+  border-radius:100%;
+}
+#btn_close > i{
+  line-height:22px;
+}
+#modal_edit_objects{
+  left: 20px;
+  right: 20px;
+  top: 20px;
+  margin: 0px !important;
+  width: 98%;
+}
+.sortable > li{
+  list-style-type: none;
+  border: 1px solid rgb(165, 160, 160);
+  margin: 5px 5px;
+  width: 140px;
+  padding: 5px;
+}
+
+
+</style>
+
+<div id="modal_edit_objects" class="ui long basic modal">
+  <a id="btn_close" href="#" onclick="$('.ui.basic.modal').modal('hide')">
+    <i class="fa fa-times"></i>
+  </a>
+  <div style="height:100%;width:100%;">
+    
+    <ul class="sortable">
+
+    </ul>
+
+  </div>
+</div>
+
+</div>
+
+ 
+
+<script>
+
+var sprites = [];
+function edit_objects(obj){
+  var lobj = getLobjByName('object',obj);
+  console.log(lobj)
+  $('.sortable').sortable({
+    handle: '.handle'
+  });
+
+}
+//function add_sprite_box()
+</script>

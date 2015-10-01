@@ -1,0 +1,18 @@
+{
+  "categories":["object","state","image","sound","script"],
+  "properties":{
+  	"object":[
+  		["text","name",""],
+  		["int","layer","0"]
+  	],
+  	"state":[
+  		["text","name",""]
+  	],
+    "image":[
+      ["text","name",""]
+    ],
+    "sound":[
+      ["text","name",""]
+    ]
+  }
+}

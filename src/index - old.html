@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" href="css/main.css"/>
+
+    <!-- jQuery -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+
+    <!-- Semantic UI -->
+    <script src="semanticUI/semantic.min.js"></script>
+    <link rel="stylesheet" href="semanticUI/semantic.min.css">
+
+    <!-- jquery splitter -->
+    <script src="js/splitter.js"></script>
+
+    <!-- jquery sortable -->
+    <script src="js/jquery.sortable.min.js"></script>
+
+    <!-- TreeView -->
+    <script src="jsTree/jstree.min.js"></script>
+    <link href="jsTree/themes/default/style.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+    <!-- CreateJS -->
+    <script src="js/easeljs-0.8.1.min.js"></script>
+
+    <script src="js/global_functions.js"></script>
+    <script src="js/canvas_functions.js"></script>
+    <script src="js/project_functions.js"></script>
+    <script src="js/keymaster.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+
+  </head>
+  <body style=" border: 1px solid black; width:100%; height:100%;">
+
+      <!-- title bar -->
+    	<div class="noselect ui black inverted borderless menu" style="-webkit-app-region: drag; border-radius:0px; margin-bottom:0px;">
+
+        <!-- menu buttons -->
+        <div id="btn_newProject" class="ui simple link item title_item title_action" onclick="_project_new()">
+          <i id="btn_newProject" class="file outline icon"></i>
+        </div>
+        <div id="btn_saveProject" class="ui simple link item title_item title_action" onclick="_project_save()">
+          <i id="btn_saveProject" class="save icon"></i>
+        </div>
+        <div id="btn_openProject" class="ui simple link item title_item title_action" onclick="_project_open()">
+          <i id="btn_openProject" class="fa fa-folder-open icon"></i>
+        </div>
+
+        <div class="fitted item menu-divider"></div>
+
+        <div class="ui simple link item title_item title_action">
+          <i class="wrench icon"></i>
+        </div>
+        <div class="ui simple link item title_item title_action">
+          <i class="fa fa-play icon"></i>
+        </div>
+
+        <div class="fitted item menu-divider"></div>
+
+        <div class="ui simple link item title_item title_action">
+          <i class="fa fa-cog icon"></i>
+        </div>
+
+
+        <!-- window control buttons -->
+        <a class="right item title_item" style="padding-top:8px;" onclick="gui.App.quit();">
+          <i class="fa fa-times fa-inverse" style="color:#FF3333;font-size:17px;"></i>
+        </a>
+        <a class="right item title_item" onclick="winResize()">
+          <i class="fa fa-square-o"></i>
+        </a>
+        <a class="right item title_item" onclick="winMinimize()">
+          <i class="fa fa-minus fa-inverse"></i>
+        </a>
+
+        <div class="fitted right item menu-divider" style="margin-top:5px;"></div>
+
+        <a class="right item title_item" onclick="openDevTools()">
+          <i class="options icon"></i>
+        </a>
+      </div>
+
+      <div id="splitterContainer">
+
+        <!-- sidebar -->
+        <!-- LEFT PANE -->
+        <div id="leftPane">
+
+          <div id="splitterContainer2"> <!-- not a splitter container atm -->
+            <div id="topPane">
+              <div class="jsTree noselect" style="position:relative;margin-left:-20px">
+              </div>
+
+              
+            </div>
+
+            <div id="bottomPane">
+              <form id="form_properties" name="form_properties">
+
+              </form>
+            </div>
+            <div class='noselect' id="lib-plus-minus" style="position:absolute; left:10px; bottom:10px;">
+                <button onclick="btn_AddObject();">
+                  <i class="plus icon"></i>
+                </button>
+                <button onclick="btn_DeleteObject();">
+                  <i class="minus icon"></i>
+                </button>
+                <button onclick="btn_ResetPlacer();" style="position:absolute;right:10px">
+                  <i class="close icon"></i>
+                </button>
+              </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT PANE -->
+        <div id="rightPane" style="overflow:hidden;position:relative">
+          <canvas id="game_canvas"></canvas>
+
+          <div id="status_bar" style="
+          position:absolute;bottom:0px;height:20px;left:0px;width:100%;
+          background-color:#1B1C1D;color:LightGray;
+          "></div>
+        </div>
+
+      </div>
+
+    <!-- MODALS -->
+    <div id="modal_del_obj" class="ui small basic modal">
+      <div class="header" style="text-align:center">
+        Delete Object?
+      </div>
+      <div class="actions" style="text-align:center">
+        <div class=" ui inverted buttons">
+          <div class="ui red basic inverted button actions deny">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green basic inverted button actions approve">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal_save_project" class="ui small basic modal">
+      <div class="header" style="text-align:center">
+        Are you sure you want to do that? You haven't saved this project!
+      </div>
+      <div class="actions" style="text-align:center">
+        <div class=" ui inverted buttons">
+          <div class="ui red basic inverted button actions deny">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green basic inverted button actions approve">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="form_savegame">
+      <input id="nw_savefiledialog" style="display:none" type="file" webkitdirectory nwworkingdir=""/>
+      <input id="nw_openfiledialog" style="display:none" type="file" accept=".blnk"/>
+    </form>
+
+    <div id="frameworkModals"></div>
+
+    <script type="text/javascript">
+      // init things
+
+        $("#splitterContainer").splitter({
+          minAsize:100,
+          maxAsize:300,
+          splitVertical:true,
+          A:$('#leftPane'),
+          B:$('#rightPane'),
+          closeableto:0,
+          outline:true
+        });
+
+        /*
+        $("#splitterContainer2").splitter({
+          splitHorizontal: true
+        });
+        */
+
+        $('.jsTree').jstree({
+          'core':{
+            'check_callback':true
+          },
+          'multiple': false,
+          //"plugins" : [ "wholerow" ],
+
+          }).bind('click',function(evt){
+            if (evt.srcElement != undefined && evt.srcElement.className.indexOf('jstree-anchor') > -1){
+              var category = $('.jstree').jstree('get_parent',evt.srcElement.id);
+              // dont show context menu if a category was clicked
+              if(category != '#'){
+                // click library element
+                lib_click(category,evt);
+              }
+            }
+          });
+
+        $('.jsTree').bind("loaded.jstree",
+           function (event, data) {
+            // To hide root nodes text
+            //$("ul:contains('root')").css('position','relative');
+            //$("ul:contains('root')").css('top','-24px');
+            //$("ul:contains('root')").css('left','-10px');
+            // To hide - icon
+            //$(".jstree-last .jstree-icon").first().hide()
+          });
+
+      document.body.addEventListener('contextmenu', function(e){
+        e.preventDefault();
+
+        if (e.srcElement.className.indexOf('jstree-anchor') > -1){
+          var category = $('.jstree').jstree('get_parent',e.srcElement.id);
+          // context menu for category
+          if(category == '#'){
+            var menuitems = [
+              {
+                'label':'create folder',
+                'click': function(){
+                  create_folder(category);
+                }
+              }
+            ];
+            showContextMenu(e.x,e.y,menuitems);
+          }
+          /* context menu for object
+          else{
+            item_name = e.srcElement.innerText;
+            var menuitems = [
+              {
+                'label':'edit',
+                'click': function(){
+                  _library_edit(category,item_name);
+                }
+              }
+            ];
+            showContextMenu(e.x,e.y,menuitems);
+          }
+          */
+        }
+      });
+      
+
+      document.addEventListener('dblclick',function(e){
+        if (e.srcElement.className.indexOf('jstree-anchor') > -1){
+          var category = $('.jstree').jstree('get_parent',e.srcElement.id);
+          if(category != '#'){
+            item_name = e.srcElement.innerText;
+            _library_edit(category,item_name);
+          }
+        }
+      });
+
+      $( document ).ready(function() {
+        var ctx = document.getElementById("game_canvas");
+        ctx.width  = 0;
+        ctx.height = 0;
+        setFramework('PhaserJS');
+
+
+      // STATUS FOR UI ELEMENTS
+      var tooltips = [
+        ['btn_newProject','Create a new project'],
+        ['btn_saveProject','Save your work'],
+        ['btn_openProject','Open a project']
+      ];
+
+      document.body.onmouseover = function(evt){
+        var id = event.target.id;
+        var found = false;
+        for(t in tooltips){
+          var tip = tooltips[t];
+          if(id == tip[0] && !found){
+            found = true;
+            setStatus(tip[1]);
+          }
+        }
+        if(!found){
+          setStatus('')
+        }
+      }
+      
+
+      });
+
+    </script>
+  </body>
+</html>

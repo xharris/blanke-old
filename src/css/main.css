@@ -23,15 +23,19 @@
 
     cursor: pointer;
 
-    transition: all 0.5s;
+    transition: all 0.2s;
     background-color:#1B1C1D;
 }
 .btn_menu:hover{
-    transition: all 0.5s;
+    transition: all 0.2s;
     background-color:#464646;
+}
+.btn_menu:hover > i{
+    color:white;
 }
 
 .btn_menu > i{
+    color:white;
     margin: auto auto;
     vertical-align: middle;
     position:absolute;
@@ -40,7 +44,7 @@
     font-size:14px;
 }
 .btn_menu > i:hover{
-    color:default;
+    color:white;
 }
 
 .btn_menu_right{
@@ -105,10 +109,30 @@
 #rightPane{	/*Contains toolbar and horizontal splitter*/
     float:right;
     width:80%;height:100%;
-    overflow: auto;
+    overflow: hidden;
+    position:relative;
     background-color: #C8C8C8; /* backgroundColor */
 }
-
+#rightPane > #status_bar{
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    height:20px;
+    width:80%;
+    background-color:#1B1C1D;
+    color:LightGray;
+}
+#rightPane > #status_coords{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    height:20px;
+    width:20%;
+    background-color:#1B1C1D;
+    color:LightGray;
+    text-align:right;
+    padding-right:10px;
+}
 
 #splitterContainer2 {/* Main splitter element */
     height:100%;width:100%;

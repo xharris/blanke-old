@@ -16,8 +16,9 @@ var mouse_y = 0;
 var line = 0;
 
 // Status parts
-var stat_stage = '';
-var stat_object = '';
+var status_msg = '';
+var status_object = '';
+var status_coords = [0,0];
 
 var old_canvas_element = null;
 
@@ -72,6 +73,7 @@ function canv_mouseWheel(evt){
   if(evt.wheelDelta > 0){
     scale += 0.05;
   }
+  setStatusCoords(status_coords[0],status_coords[1]);
   canv_Redraw();
   return false; 
 }
@@ -142,6 +144,9 @@ function canv_EndMoveCam(){
 function canv_mouseMove(evt){
   mouse_x = evt.stageX;
   mouse_y = evt.stageY;
+  var snapx = getSetting('ide','grid_width');
+  var snapy = getSetting('ide','grid_height'); 
+
   // move object placer
   if(selected_obj != 0){
     if(key.ctrl){
@@ -149,9 +154,6 @@ function canv_mouseMove(evt){
       selected_obj.position(mouse_x/Math.abs(scale),mouse_y/Math.abs(scale));
     }else{
       // snap to grid
-      var snapx = getSetting('ide','grid_width');
-      var snapy = getSetting('ide','grid_height');
-
       var snappedx, snappedy;
       snappedx = Math.floor(((mouse_x/Math.abs(scale))-camera[0])/snapx)*snapx;
       snappedy = Math.floor(((mouse_y/Math.abs(scale))-camera[1])/snapy)*snapy;
@@ -166,6 +168,18 @@ function canv_mouseMove(evt){
     
     moveEntitiesToCamera();
   }
+  
+  // set status
+  status_msg = curr_state;
+  // add object if one is being hovered over
+  if(status_object != ''){
+    status_msg += ' : '+status_object;
+  }
+  status_coords = [(mouse_x/Math.abs(scale))-(camera[0]/Math.abs(scale)),
+                   (mouse_y/Math.abs(scale))-(camera[1]/Math.abs(scale))];
+
+  setStatus(status_msg);
+  setStatusCoords(status_coords[0],status_coords[1]);
 }
 
 function refreshEntities(){
@@ -264,7 +278,7 @@ function canv_Object (x,y,library_obj) {
   };
 
   this.mouseOver = function(call_obj){
-    setStatus(call_obj.lobj['name'])
+    status_object = call_obj.lobj['name']+' ('+call_obj.stateX+','+call_obj.stateY+')';
   }
 
   var self = this;
@@ -275,7 +289,7 @@ function canv_Object (x,y,library_obj) {
 
   this.bitmap.addEventListener('rollout',function(){
     if(self.visible){
-      setStatus('');
+      status_object = '';
     }
   })
    
@@ -288,9 +302,11 @@ function canv_Object (x,y,library_obj) {
   }
 
   this.position = function(x,y){
+    /*
     this.rect.graphics.beginStroke("Blue");
     this.rect.graphics.drawRect(this.bitmap.x,this.bitmap.y,this.bitmap.width,this.bitmap.height);
     this.rect.graphics.endFill();
+    */
 
     this.bitmap.x = x;
     this.bitmap.y = y;
@@ -302,8 +318,8 @@ function canv_Object (x,y,library_obj) {
 
   this.serialize = function(){
     return {
-      'x':this.x,
-      'y':this.y,
+      'x':this.stateX,
+      'y':this.stateY,
       'lobject_name':this.lobj['orig_name'],
       'state':this.state
     }

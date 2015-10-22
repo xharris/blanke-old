@@ -141,6 +141,7 @@ function openProject(location){
 
 function setup_newproject(){
 	canv_destroyCanvas()
+	resetStatusCoords();
 
 	lobjects['settings'] = {}
 

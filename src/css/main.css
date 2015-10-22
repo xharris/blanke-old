@@ -60,10 +60,6 @@
     bottom:10%;
 }
 
-.modal > *{
-    display:none;
-}
-
 #btn_title{
 	border-radius:0px;
 }

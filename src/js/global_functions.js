@@ -324,6 +324,10 @@ function setStatusCoords(x,y){
   msg = '['+x.toFixed(0)+','+y.toFixed(0)+'] '+(scale*100).toFixed(0)+'%';
   document.getElementById('status_coords').innerHTML = msg;
 }
+// this function not workin idk 
+function resetStatusCoords(){
+  document.getElementById('status_coords').innerHTML = '';
+}
 
 function updateTree(){
   
